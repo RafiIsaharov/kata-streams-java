@@ -16,6 +16,11 @@ public class Order {
 	  return status() == COMPLETED;
 	}
 
+	public boolean hasSpecialOffer() {
+	  return orderLines.stream()
+			  .anyMatch(OrderLine::isSpecialOffer);
+	}
+
 	public enum Status {
 		PLACED, COMPLETED, CANCELLED
 	}

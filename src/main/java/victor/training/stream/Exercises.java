@@ -12,7 +12,8 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingDouble;
 import static victor.training.stream.support.Order.*;
 
 public class Exercises {
@@ -131,23 +132,52 @@ public class Exercises {
    * @return order with the max total() that does NOT contain a special offer line
    */
   public Order p4_maxPriceOrder(List<Order> orders) {
-    Order maxOrder = null;
-    for (Order order : orders) {
-      boolean hasSpecialOffer = false;
-      for (OrderLine orderLine : order.orderLines()) {
-        if (orderLine.isSpecialOffer()) {
-          hasSpecialOffer = true;
-          break;
-        }
-      }
-      if (hasSpecialOffer) {
-        continue;
-      }
-      if (maxOrder == null || order.total() > maxOrder.total()) {
-        maxOrder = order;
-      }
-    }
-    return maxOrder;
+//    Order maxOrder = null;
+//    for (Order order : orders) {
+//      boolean hasSpecialOffer = false;
+//      for (OrderLine orderLine : order.orderLines()) {
+//        if (orderLine.isSpecialOffer()) {
+//          hasSpecialOffer = true;
+//          break;
+//        }
+//      }
+//      if (hasSpecialOffer) {
+//        continue;
+//      }
+//      if (maxOrder == null || order.total() > maxOrder.total()) {
+//        maxOrder = order;
+//      }
+//    }
+//    return maxOrder;
+
+    // I want to create another List of Orders that contains only the orders that don't have special offers
+    // classic refactor when you see a for loop with continue and break
+    // you need to create a new collection with the elements and you interesting in and loop threw those => filter
+    List<Order> regularOrders = orders.stream()
+            .filter(order -> !order.hasSpecialOffer()).toList();
+
+    //BIG PROBLEM: When I do order of the total,
+    // i will change the order of the elements in the list regularOrders
+//    Comparator<Order> compareByTotal = new Comparator<>() {
+//      @Override
+//      public int compare(Order o1, Order o2) {
+//        return Double.compare(o2.total(), o1.total());
+//      }
+//    };
+//    Comparator<Order> compareByTotal = (o1, o2) ->
+//        Double.compare(o2.total(), o1.total());
+
+
+//    Comparator<Order> comparing = comparing(Order::total);
+//    Collections.sort(regularOrders, comparing.reversed());
+//    if (regularOrders.isEmpty()) return null;
+//    return regularOrders.get(0);
+
+
+      return regularOrders.stream()
+              .max(comparing(Order::total))
+              .orElse(null);
+
   }
 
   /**
