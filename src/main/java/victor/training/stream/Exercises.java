@@ -113,12 +113,14 @@ public class Exercises {
 
   // TODO all the following: rewrite with streams
   public boolean p3_hasActiveOrders(List<Order> orders) {
-    for (Order order : orders) {
-      if (order.isCompleted()) {
-        return true;
-      }
-    }
-    return false;
+//    for (Order order : orders) {
+//      if (order.isCompleted()) {
+//        return true;
+//      }
+//    }
+//    return false;
+    // any match returning boolean
+    return orders.stream().anyMatch(Order::isCompleted);
   }
 
   /**
