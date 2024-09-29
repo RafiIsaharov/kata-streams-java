@@ -95,12 +95,20 @@ public class Exercises {
   public Order p2_findOrderById(List<Order> orders, int orderId) {
     // TODO 1: rewrite with streams
     // TODO 2: return Optional<> and fix the tests
-    for (Order order : orders) {
-      if (order.id() == orderId) {
-        return order;
-      }
-    }
-    return null;
+//    for (Order order : orders) {
+//      if (order.id() == orderId) {
+//        return order;
+//      }
+//    }
+
+//    return orders.parallelStream()// useful when doing HEAVY CPUs (N-1 threads, {if 10 CPUS => 9 threads for streaming + 1main thread}) work per
+//    element
+//    .findAny() first one found by any threads (of the parallel stream) => faster
+
+    return orders.stream()
+            .filter(order -> order.id() == orderId)
+            .findFirst()// really the first one found === findAny
+            .orElse(null);
   }
 
   // TODO all the following: rewrite with streams
