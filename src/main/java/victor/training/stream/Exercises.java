@@ -12,6 +12,7 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static victor.training.stream.support.Order.*;
 
 public class Exercises {
@@ -120,7 +121,10 @@ public class Exercises {
 //    }
 //    return false;
     // any match returning boolean
-    return orders.stream().anyMatch(Order::isCompleted);
+//    return orders.stream().filter(Order::isCompleted).collect(toList()).size() > 0;
+//    return !orders.stream().filter(Order::isCompleted).collect(toList()).isEmpty();
+//    return orders.stream().filter(Order::isCompleted).count() > 0;
+    return orders.stream().anyMatch(Order::isCompleted); // simpler to read, and less memory wasteful
   }
 
   /**
