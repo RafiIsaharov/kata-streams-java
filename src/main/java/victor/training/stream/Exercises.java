@@ -15,7 +15,8 @@ import java.util.stream.Stream;
 import static victor.training.stream.support.Order.*;
 
 public class Exercises {
-  //private final OrderMapper orderMapper = new OrderMapper();// in reality this would be injected
+  // imagine @Autowired/@Inject here
+  private final OrderMapper orderMapper = new OrderMapper();// in reality this would be injected
 
   public List<OrderDto> p1_activeOrders(List<Order> orders) {
     // TODO 1: simplify
@@ -48,7 +49,7 @@ public class Exercises {
     MyPredicate isCompleted6 = Order::isCompleted; //Syntax sugar
 //    Object o = Order::isCompleted; doesn't compile
     Object o = (MyPredicate) Order::isCompleted; //Syntax sugar
-    Function<Order, OrderDto> toDto1 = OrderMapper::toDto;
+    Function<Order, OrderDto> toDto1 = orderMapper::toDto;
     // Function<Order, OrderDto> toDto2 = orderMapper::toDto;
 
 // 2) ref to an instance method (println) from the instance that I HAVE already (System.out)
@@ -83,7 +84,7 @@ public class Exercises {
 //    return orders.stream().filter(isCompleted4).map(toDto).toList();
     // grab a ref to an instance method from a Type => I will need the instance to call the method
     // in other words from the  type Order grab the method isCompleted
-    return orders.stream().filter(Order::isCompleted).map(OrderMapper::toDto).toList();
+    return orders.stream().filter(Order::isCompleted).map(orderMapper::toDto).toList();
 
   }
 
