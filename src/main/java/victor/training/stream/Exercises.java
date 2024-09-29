@@ -8,12 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Month;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static victor.training.stream.support.Order.*;
 
 public class Exercises {
   private final OrderMapper orderMapper = new OrderMapper();
@@ -56,6 +55,7 @@ public class Exercises {
     //Note! here the order to print is not yet available
     //Note: the method println is void, so it doesn't return anything
     Consumer<Order> print1 = order -> System.out.println(order);
+    Consumer<String> print3 = order -> System.out.println(order);//overloaded method
     //missing the argument(order) in future call i'm going to receive an order to print
     Consumer<Order> print2 = System.out::println;
 
@@ -69,6 +69,7 @@ public class Exercises {
     Supplier<Order> orderSupplier = () -> new Order(); // takes nothing, returns an Order // like a factory
     Supplier<Order> orderSupplier1 = Order::new; //syntax sugar
     Function<Integer, Order> orderSupplier2 = Order::new; //syntax sugar
+    BiFunction<Integer, Status, Order> orderSupplier3 = Order::new; //syntax sugar
 
 //    return orders.stream().filter(isCompleted4).map(toDto).toList();
     return orders.stream().filter(Order::isCompleted).map(orderMapper::toDto).toList();

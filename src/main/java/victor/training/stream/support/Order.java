@@ -45,6 +45,11 @@ public class Order {
 		this.id = id;
 	}
 
+	public Order(Integer id, Status status) {
+		this.id = id;
+		this.status = status;
+	}
+
 
 	public List<OrderLine> orderLines() {
 		return orderLines;
