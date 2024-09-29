@@ -2,6 +2,7 @@ package victor.training.stream.support;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
+import static victor.training.stream.support.Order.Status.COMPLETED;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ import java.util.Optional;
 
 public class Order {
 
+	public boolean isCompleted() {
+		return status() == COMPLETED;
+	}
 	public enum Status {
 		PLACED, COMPLETED, CANCELLED
 	}

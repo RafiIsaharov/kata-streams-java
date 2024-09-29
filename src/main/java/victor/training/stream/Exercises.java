@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Month;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static victor.training.stream.support.Order.Status.COMPLETED;
 
 public class Exercises {
   private final OrderMapper orderMapper = new OrderMapper();
@@ -20,18 +20,35 @@ public class Exercises {
     // TODO 1: simplify
     // TODO 2: use the OrderDto constructor
     // TODO 3: use the OrderMapper.toDto method
-    List<OrderDto> dtos = new ArrayList<>();
-    for (Order order : orders) {
-      if (order.status() == COMPLETED) {
-        OrderDto dto = new OrderDto(
-            order.total(),
-            order.createdOn(),
-            order.paymentMethod(),
-            order.status());
-        dtos.add(dto);
-      }
-    }
-    return dtos;
+//    List<OrderDto> dtos = new ArrayList<>();
+//    for (Order order : orders) {
+//      if (order.isCompleted()) {
+//        OrderDto dto = new OrderDto(
+//            order.total(),
+//            order.createdOn(),
+//            order.paymentMethod(),
+//            order.status());
+//        dtos.add(dto);
+//      }
+//    }
+//  Predicate<Order> isCompleted = new Predicate<Order>() {
+//      @Override
+//      public boolean test(Order order) {
+//          return order.isCompleted();
+//      }
+//  };
+    Predicate<Order> isCompleted1 = (Order order) -> {return order.isCompleted();};// boilerplate code
+    Predicate<Order> isCompleted2 = (Order order) -> order.isCompleted(); // boilerplate code
+    Predicate<Order> isCompleted3 = order -> order.isCompleted(); // lambda syntax
+    Predicate<Order> isCompleted4 = Order::isCompleted;  //Syntax sugar
+    Function<Order, Boolean> isCompleted5 = Order::isCompleted; //Syntax sugar
+    MyPredicate isCompleted6 = Order::isCompleted; //Syntax sugar
+//    Object o = Order::isCompleted; doesn't compile
+    Object o = (MyPredicate) Order::isCompleted; //Syntax sugar
+
+    Function<Order, OrderDto> toDto = orderMapper::toDto;
+
+    return orders.stream().filter(Order::isCompleted).map(orderMapper::toDto).toList();
   }
 
   public Order p2_findOrderById(List<Order> orders, int orderId) {
@@ -48,7 +65,7 @@ public class Exercises {
   // TODO all the following: rewrite with streams
   public boolean p3_hasActiveOrders(List<Order> orders) {
     for (Order order : orders) {
-      if (order.status() == COMPLETED) {
+      if (order.isCompleted()) {
         return true;
       }
     }
@@ -103,7 +120,7 @@ public class Exercises {
   public int p6_completedTotalSum(List<Order> orders) {
     double sum = 0;
     for (Order order : orders) {
-      if (order.status() == COMPLETED)
+      if (order.isCompleted())
         sum += order.total();
     }
     return (int) sum;
