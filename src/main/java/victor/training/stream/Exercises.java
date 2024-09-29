@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Month;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,6 +39,8 @@ public class Exercises {
 //          return order.isCompleted();
 //      }
 //  };
+
+    //1) ref to an instance method that I don't have yet, but i will have
     Predicate<Order> isCompleted1 = (Order order) -> {return order.isCompleted();};// boilerplate code
     Predicate<Order> isCompleted2 = (Order order) -> order.isCompleted(); // boilerplate code
     Predicate<Order> isCompleted3 = order -> order.isCompleted(); // lambda syntax
@@ -45,9 +49,28 @@ public class Exercises {
     MyPredicate isCompleted6 = Order::isCompleted; //Syntax sugar
 //    Object o = Order::isCompleted; doesn't compile
     Object o = (MyPredicate) Order::isCompleted; //Syntax sugar
-
     Function<Order, OrderDto> toDto = orderMapper::toDto;
 
+// 2) ref to an instance method (println) from the instance that I HAVE already (System.out)
+    //ref to an instance method of an arbitrary object of a particular type
+    //Note! here the order to print is not yet available
+    //Note: the method println is void, so it doesn't return anything
+    Consumer<Order> print1 = order -> System.out.println(order);
+    //missing the argument(order) in future call i'm going to receive an order to print
+    Consumer<Order> print2 = System.out::println;
+
+    Consumer<Order> total = order -> order.setTotal(0); //takes an Order, returns (anything back) void
+//    Consumer<Order> total2 = Order::setTotal(0); //takes an Order, returns (anything back) void
+  long l= System.currentTimeMillis();
+  //3) ref to a static method
+    Supplier<Long> currentTime = () -> System.currentTimeMillis(); // takes nothing, returns a Long
+    Supplier<Long> currentTime2 = System::currentTimeMillis; // takes nothing, returns a Long
+  //4) ref to a constructor
+    Supplier<Order> orderSupplier = () -> new Order(); // takes nothing, returns an Order // like a factory
+    Supplier<Order> orderSupplier1 = Order::new; //syntax sugar
+    Function<Integer, Order> orderSupplier2 = Order::new; //syntax sugar
+
+//    return orders.stream().filter(isCompleted4).map(toDto).toList();
     return orders.stream().filter(Order::isCompleted).map(orderMapper::toDto).toList();
   }
 

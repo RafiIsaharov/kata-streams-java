@@ -13,8 +13,9 @@ import java.util.Optional;
 public class Order {
 
 	public boolean isCompleted() {
-		return status() == COMPLETED;
+	  return status() == COMPLETED;
 	}
+
 	public enum Status {
 		PLACED, COMPLETED, CANCELLED
 	}
@@ -70,9 +71,13 @@ public class Order {
 		return total;
 	}
 
+
 	public Order total(double total) {
 		this.total = total;
 		return this;
+	}
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 	public PaymentMethod paymentMethod() {
