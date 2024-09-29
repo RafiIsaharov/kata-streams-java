@@ -71,8 +71,21 @@ public class Exercises {
     Function<Integer, Order> orderSupplier2 = Order::new; //syntax sugar
     BiFunction<Integer, Status, Order> orderSupplier3 = Order::new; //syntax sugar
 
+    /////////////////////////////
+//    Function<Order, OrderDto> no = Exercises::toDto; //java compiler won't know on which object to call toDto function
+    // to call it later, I will have to provide an instance of  Exercises
+    BiFunction<Exercises/*the instance that will call the method*/,
+            Order/*parameter to pass*/,
+            OrderDto /*return obj*/> aRefToAnInstanceMethodWithoutSpecifyingTheInstance = Exercises::toDto;
+    OrderDto dto = aRefToAnInstanceMethodWithoutSpecifyingTheInstance.apply(this, new Order());
+
 //    return orders.stream().filter(isCompleted4).map(toDto).toList();
     return orders.stream().filter(Order::isCompleted).map(orderMapper::toDto).toList();
+
+  }
+
+  private OrderDto toDto(Order order) {
+    return new OrderDto(order.total(), order.createdOn(), order.paymentMethod(), order.status());
   }
 
   public Order p2_findOrderById(List<Order> orders, int orderId) {
