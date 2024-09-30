@@ -328,21 +328,21 @@ public class Exercises {
 //            .toList();
 
     // using LinkedHashSet
-    return orders.stream()
-            .flatMap(order -> order.orderLines().stream())
-            .map(OrderLine::product)
-            .sorted(comparing(Product::name))
-            .collect(Collectors.toCollection(LinkedHashSet::new))
-            .stream()
-            .toList();
-
-    // using distinct
 //    return orders.stream()
 //            .flatMap(order -> order.orderLines().stream())
 //            .map(OrderLine::product)
-//            .distinct() // remove duplicates using equals and hashcode like SQL distinct
 //            .sorted(comparing(Product::name))
+//            .collect(Collectors.toCollection(LinkedHashSet::new))
+//            .stream()
 //            .toList();
+
+    // using distinct
+    return orders.stream()
+            .flatMap(order -> order.orderLines().stream())
+            .map(OrderLine::product)
+            .distinct() // remove duplicates using equals and hashcode like SQL distinct
+            .sorted(comparing(Product::name))
+            .toList();
   }
 
   /**
