@@ -244,25 +244,57 @@ public class Exercises {
 //        sum += order.total();
 //    }
 //    return (int) sum;
-    // BAbY STEPS:
+
+    // Problems that can appear with using forEach instead of map in this case:
+    // 1. I can't use a local variable in the lambda
+    // 2. I can't return a value from the lambda
+    // 3. I can't throw a checked exception from the lambda
+    // 4. I can't break from the lambda
+    // 5. I can't continue from the lambda
+    // 6. I can't return a value from the enclosing method
+    // 7. A lambda expression must be final or effectively final
+    // All other languages have a way to return a value from a lambda : JS - return, Python - return, Ruby - return, C# - return, Scala - return
+    // Java 8 - forEach - void lambda
+    // if parallelStream is used, the sum will be calculated in parallel
+    // because if this lambda runs in a different thread, it can't return a value to the main thread,
+    // and it would allow multiple threads to write to the same variable
+    // Java language doesn't allow multiple threads to write to the same variable on stack
+    // local variable leaves in a Stack Frame, and it's not shared between threads
+    //Memory - Stack Frame and Heap
+    // The reference also leaves in the Stack Frame, but the object leaves in the Heap
+    //BAD Ideas
+    // 1. Autoboxing - converting a primitive to an object AutomicInteger sum = new AtomicInteger(0);
+    // 2. Using a mutable object in a lambda double[] sum = {0};
+
+    //forEach should be totally avoided!!!
+
+//    double sum = 0;
+//    orders.stream()
+//            .filter(Order::isCompleted)
+//            .forEach(order -> sum += order.total());
+//    return (int) sum;
+
+    // BABY STEPS:
     // 1. I will start with the Orders stream
     // 2. I will filter the orders that are completed
     // 3. I will map the orders to their total
     // 4. I will sum the totals
     // 5. I will truncate the sum to int
     // 6. I will return the int
+
+
       return (int)orders.stream()
             .filter(Order::isCompleted)
             .mapToDouble(Order::total)
             .sum(); // belong to the DoubleStream/IntStream/LongStream - NumericStream
 
     // Using reduce:
-//    double sum = orders.stream()
-//            .filter(Order::isCompleted)
-//            .map(o -> o.total())
-//            .reduce(0d, (a+b) -> a+b);
-//            .reduce(0d, Double::sum);
-//    return (int) sum;
+/*    double sum = orders.stream()
+            .filter(Order::isCompleted)
+            .map(o -> o.total())
+            .reduce(0d, (a+b) -> a+b);
+            .reduce(0d, Double::sum);
+    return (int) sum;*/
 
   }
 
