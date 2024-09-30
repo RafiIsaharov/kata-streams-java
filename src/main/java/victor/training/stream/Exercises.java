@@ -6,6 +6,7 @@ import victor.training.stream.support.Order.PaymentMethod;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 import java.util.function.*;
@@ -187,19 +188,48 @@ public class Exercises {
    * @return last 3 returnReason()s sorted descending by Order.createdOn
    */
   public List<String> p5_last3Orders(List<Order> orders) {
-    List<Order> copy = new ArrayList<>(orders);
-    copy.sort(new LatestOrderComparator());
-    List<String> returnReasons = new ArrayList<>();
-    for (Order order : copy) {
-      if (order.returnReason().isPresent()) {
-        returnReasons.add(order.returnReason().get());
-        if (returnReasons.size() == 3) {
-          break;
-        }
-      }
-    }
-    return returnReasons;
-    // Hint: Optional#stream()
+//    List<Order> copy = new ArrayList<>(orders);
+//    copy.sort(new LatestOrderComparator());
+//    List<String> returnReasons = new ArrayList<>();
+//    for (Order order : copy) {
+//      if (order.returnReason().isPresent()) {
+//        returnReasons.add(order.returnReason().get());
+//        if (returnReasons.size() == 3) {
+//          break;
+//        }
+//      }
+//    }
+//    return returnReasons;
+// Hint: Optional#stream()
+    Order o = new Order();
+    Optional<String> optionalS = o.returnReason();
+    Stream<String> stream = optionalS.stream(); // 0 or 1 element CTRL + Q to see the doc
+    //Baby Steps:
+    // 1. will start with Orders stream and sort them by createdOn
+    // 2. will filter the orders that have a returnReason
+    // 3. will limit the stream to 3 elements
+    // 4. will map the orders to their returnReason
+    // 5. will collect the returnReasons in a List
+    return orders.stream()
+            .sorted(new LatestOrderComparator())
+//            .sorted(Comparator.<Order, LocalDate>comparing(Order::createdOn).reversed())
+            // java 8 way best:
+//            .filter(order -> order.returnReason().isPresent())
+//            .map(order -> order.returnReason().orElseThrow())//this is misleading, will NEVER throw, because of the filter above (if it's not present, it won't get here)
+
+            // java 11 way best:// Strem of Stream of String - Strem<Stream<String>>
+            // we will use flatMap to flatten the Stream<Stream<String>> to Stream<String>
+            .flatMap(order -> order.returnReason().stream())
+            //I am joining a series of streams of returnReasons into a single stream with 0 or 1  element (if the returnReason is present)
+
+            // :: - mania of java 8
+//            .map(Order::returnReason)
+//            .flatMap(Optional::stream)
+
+            .limit(3)
+            .toList();
+
+    //Simple way to do it:
   }
 
   /**
