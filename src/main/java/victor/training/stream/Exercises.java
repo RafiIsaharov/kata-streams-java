@@ -3,6 +3,7 @@ package victor.training.stream;
 import victor.training.stream.support.*;
 import victor.training.stream.support.Order.PaymentMethod;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -492,12 +493,28 @@ public class Exercises {
    * @return the first cell of a semicolon-separated file, as integers
    */
   public Set<Integer> pC_csvLinesInAllFilesInFolder(File file) throws IOException {
-    try (Stream<String> lines = Files.lines(file.toPath())) {
-      return lines
-          .filter(s -> !s.isBlank())
-          .map(line -> Integer.parseInt(line.split(";")[0]))
-          .collect(toSet());
-    }
+    List<String> allLines = Files.readAllLines(file.toPath());// BAD: loads all the file in memory. If the file is big, it will crash,
+    // cause a OutOfMemoryError
+    //Streams can traverse a file line by line,a result of a query in DB, a collection, an array, or any other data structure
+    //THIS IS BETTER - it iterate one line at a time
+      try (Stream<String> lines = Files.lines(file.toPath())) {
+        return lines
+            .filter(s -> !s.isBlank())
+            .map(line -> Integer.parseInt(line.split(";")[0]))
+            .collect(toSet());
+      }
+
+// Without java 8
+//    try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
+//         Set<Integer> result = new HashSet<>();
+//         String line;
+//         while ((line = reader.readLine()) != null) {
+//            if (!line.isBlank()) {
+//                result.add(Integer.parseInt(line.split(";")[0]));
+//            }
+//         }
+//          return result;
+//    }
   }
 
   /**
