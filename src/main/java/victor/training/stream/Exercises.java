@@ -385,7 +385,7 @@ public class Exercises {
 //    Map<PaymentMethod, Map<LocalDate, List<Order>>> mapOfOrdersByDate =
 //            orders.stream().collect(groupingBy(
 //                    Order::paymentMethod, // KEY
-//                    groupingBy(Order::createdOn,
+//                    groupingBy(Order::createdOn, // NPE if one order has null createdOn
 //                            mapping(Function.identity(),toList())) // VALUE
 //            ));
 
@@ -410,22 +410,32 @@ public class Exercises {
    * @return the total number of products purchased across all orders (see test)
    */
   public Map<Product, Integer> p9_productCount(List<Order> orders) {
-    List<OrderLine> allLines = new ArrayList<>();
-    for (Order order : orders) {
-      allLines.addAll(order.orderLines());
-    }
-    Map<Product, Integer> result = new HashMap<>();
-    for (OrderLine line : allLines) {
-      int old;
-      if (!result.containsKey(line.product())) {
-        result.put(line.product(), 0);
-        old = 0;
-      } else {
-        old = result.get(line.product());
-      }
-      result.put(line.product(), old + line.count());
-    }
-    return result;
+//    List<OrderLine> allLines = new ArrayList<>();
+//    for (Order order : orders) {
+//      allLines.addAll(order.orderLines());
+//    }
+//    Map<Product, Integer> result = new HashMap<>();
+//    for (OrderLine line : allLines) {
+//      int old;
+//      if (!result.containsKey(line.product())) {
+//        result.put(line.product(), 0);
+//        old = 0;
+//      } else {
+//        old = result.get(line.product());
+//      }
+//      result.put(line.product(), old + line.count());
+//    }
+//    return result;
+    // want to do kind of statistics of how many products types were bought
+    // BABY STEPS:
+    // 1. I will start with the Orders stream
+    // 2. I will flatMap the orders to their orderLines
+    // 3. I will group the orderLines by their product
+    // 4. I will sum the counts of the orderLines
+    // 5. I will return the map
+    return orders.stream()
+            .flatMap(order -> order.orderLines().stream())
+            .collect(groupingBy(OrderLine::product, summingInt(OrderLine::count)));
   }
 
   /**
