@@ -1,0 +1,33 @@
+summarize:
+-  Functional Programming
+    o Basics of Lambda syntax sugar
+    o Basic-Advanced Stream use-cases (Exercises.java live-coded)
+    o Syntax quirks: method references (::), target typing, effectively final
+    o Abuses/questionable usages of .stream(). maybe for is better sometimes
+    o Exceptions: wrapping as runtime and the Try monad (optional)
+
+
+
+- :: operator: method reference: static method reference, instance method reference (by type or by existing instance) ,
+    constructor reference
+- -> operator: lambda expression, syntax sugar for anonymous class
+- effectively final: variable that is not modified after initialization = you cannot change local variables (on stack) in lambda expression
+- in a forEarch loop, avoid doing mutations to List, variables, collections, etc.
+- Reactive (functional) programming: Observer pattern, Observable, Observer, Subscriber, Publisher, Subscription, Flowable, Single, Maybe, Completable
+- .fillter.map
+- .findFirst (or .findAny + parallelStream)
+- .anyMatch, .allMatch, .noneMatch
+- short circuiting: &&, ||, !, ?:, if-else, while, for, do-while (stop evaluating when the result is already determined)
+- .groupingBy
+- .limit, .skip
+- .sorted
+- .Comparator.comparing
+- .reduce < avoid if possible (not parallelizable) < use .sum, .max, .min, .count, .average instead
+- .collect(Collectors.toList()), . toSet()
+- .flatMap(-> Stream)) to join multiple children streams
+- Optional(#Streams)
+- Stream#generate, Stream#iterate, Stream#of, Stream#concat
+
+FP enthusiasts /maniacs:
+- why use WHERE in SQL when we could do repoData.findAll().stream().filter().map() in Java? =>  problem: performance hit if> 1000 rows (SQL is declarative, Java is imperative)
+- .filter(->remoteCall())- avoid in stream operations on remote it can be expensive (e.g. DB, network),performance hit because you are hitting network for each element
