@@ -203,7 +203,10 @@ public class Exercises {
 // Hint: Optional#stream()
     Order o = new Order();
     Optional<String> optionalS = o.returnReason();
-    Stream<String> stream = optionalS.stream(); // 0 or 1 element CTRL + Q to see the doc
+    Stream<String> stream = optionalS.stream(); // 0 or 1 element
+    // CTRL + Q to see the doc
+    // CTRL + SHIFT + I to see the implementation
+    // CTRL + SHIFT + P to see the type of parameters
     //Baby Steps:
     // 1. will start with Orders stream and sort them by createdOn
     // 2. will filter the orders that have a returnReason
@@ -229,19 +232,38 @@ public class Exercises {
             .limit(3)
             .toList();
 
-    //Simple way to do it:
   }
 
   /**
    * @return sum of all Order.total(), truncated to int.
    */
   public int p6_completedTotalSum(List<Order> orders) {
-    double sum = 0;
-    for (Order order : orders) {
-      if (order.isCompleted())
-        sum += order.total();
-    }
-    return (int) sum;
+//    double sum = 0;
+//    for (Order order : orders) {
+//      if (order.isCompleted())
+//        sum += order.total();
+//    }
+//    return (int) sum;
+    // BAbY STEPS:
+    // 1. I will start with the Orders stream
+    // 2. I will filter the orders that are completed
+    // 3. I will map the orders to their total
+    // 4. I will sum the totals
+    // 5. I will truncate the sum to int
+    // 6. I will return the int
+      return (int)orders.stream()
+            .filter(Order::isCompleted)
+            .mapToDouble(Order::total)
+            .sum(); // belong to the DoubleStream/IntStream/LongStream - NumericStream
+
+    // Using reduce:
+//    double sum = orders.stream()
+//            .filter(Order::isCompleted)
+//            .map(o -> o.total())
+//            .reduce(0d, (a+b) -> a+b);
+//            .reduce(0d, Double::sum);
+//    return (int) sum;
+
   }
 
   /**
