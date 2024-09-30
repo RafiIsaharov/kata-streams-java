@@ -382,12 +382,12 @@ public class Exercises {
 
 
     //olympics example
-    Map<PaymentMethod, Map<LocalDate, Set<Order>>> mapOfOrdersByDate =
-            orders.stream().collect(groupingBy(
-                    Order::paymentMethod, // KEY
-                    groupingBy(Order::createdOn,
-                            mapping(Function.identity(),toSet())) // VALUE
-            ));
+//    Map<PaymentMethod, Map<LocalDate, List<Order>>> mapOfOrdersByDate =
+//            orders.stream().collect(groupingBy(
+//                    Order::paymentMethod, // KEY
+//                    groupingBy(Order::createdOn,
+//                            mapping(Function.identity(),toList())) // VALUE
+//            ));
 
     // BABY STEPS:
     // 1. I will start with the Orders stream
