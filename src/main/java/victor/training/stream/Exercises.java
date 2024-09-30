@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingDouble;
+import static java.util.function.Predicate.*;
 import static victor.training.stream.support.Order.*;
 
 public class Exercises {
@@ -153,9 +154,10 @@ public class Exercises {
     // I want to create another List of Orders that contains only the orders that don't have special offers
     // classic refactor when you see a for loop with continue and break
     // you need to create a new collection with the elements and you interesting in and loop threw those => filter
-    List<Order> regularOrders = orders.stream()
-            .filter(order -> !order.hasSpecialOffer()).toList();
-
+//    Predicate<Order> noSpecialOffers = Predicate.not(Order::hasSpecialOffer); // higher-order function (function that returns a function)
+      List<Order> regularOrders = orders.stream()
+           // .filter(order -> !order.hasSpecialOffer()).toList();
+            .filter(not(Order::hasSpecialOffer)).toList(); // a bit to geek for the first years
     //BIG PROBLEM: When I do order of the total,
     // i will change the order of the elements in the list regularOrders
 //    Comparator<Order> compareByTotal = new Comparator<>() {
