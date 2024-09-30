@@ -319,13 +319,30 @@ public class Exercises {
     // 4. I will collect the products in a Set
     // 5. I will sort the products by name
     // 6. I will return the products in a List
+//    return orders.stream()
+//            .flatMap(order -> order.orderLines().stream())
+//            .map(OrderLine::product)
+//            .collect(Collectors.toSet()) // eliminates duplicates (Set) the keys are "sorted" by the hashcode and not by the name
+//            .stream()
+//            .sorted(comparing(Product::name))
+//            .toList();
+
+    // using LinkedHashSet
     return orders.stream()
             .flatMap(order -> order.orderLines().stream())
             .map(OrderLine::product)
-            .collect(Collectors.toSet()) // eliminates duplicates (Set) the keys are "sorted" by the hashcode and not by the name
-            .stream()
             .sorted(comparing(Product::name))
+            .collect(Collectors.toCollection(LinkedHashSet::new))
+            .stream()
             .toList();
+
+    // using distinct
+//    return orders.stream()
+//            .flatMap(order -> order.orderLines().stream())
+//            .map(OrderLine::product)
+//            .distinct() // remove duplicates using equals and hashcode like SQL distinct
+//            .sorted(comparing(Product::name))
+//            .toList();
   }
 
   /**
