@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingDouble;
 import static java.util.function.Predicate.*;
+import static java.util.stream.Collectors.*;
 import static victor.training.stream.support.Order.*;
 
 public class Exercises {
@@ -360,13 +361,49 @@ public class Exercises {
 //    }
 //    return map;
 
+    Map<PaymentMethod, List<LocalDate>> map =
+            orders.stream().collect(groupingBy(
+                    Order::paymentMethod, // KEY
+                    mapping(Order::createdOn, Collectors.toList()) // VALUE
+            ));
+    Map<PaymentMethod, Set<LocalDate>> map2 =
+            orders.stream().collect(groupingBy(
+                    Order::paymentMethod, // KEY
+                    mapping(Order::createdOn, toSet()) // VALUE
+            ));
+
+    Map<PaymentMethod, Set<Order>> mapOfOrders =
+            orders.stream().collect(groupingBy(
+                    Order::paymentMethod, // KEY
+//                    mapping(Exercises.returnIdentity(), toSet())
+//                    mapping(Exercises::returnSame, toSet())
+                    mapping(Function.identity(), toSet()) // VALUE Function.identity() : Order -> Order
+            ));
+
+
+    //olympics example
+    Map<PaymentMethod, Map<LocalDate, Set<Order>>> mapOfOrdersByDate =
+            orders.stream().collect(groupingBy(
+                    Order::paymentMethod, // KEY
+                    groupingBy(Order::createdOn,
+                            mapping(Function.identity(),toSet())) // VALUE
+            ));
+
     // BABY STEPS:
     // 1. I will start with the Orders stream
     // 2. I will group the orders by their paymentMethod
     // 3. I will return the map
     return orders.stream()
-            .collect(Collectors.groupingBy(Order::paymentMethod)); // base on order give me a classification key - value
+            .collect(groupingBy(Order::paymentMethod)); // base on order give me a classification key - value
 
+  }
+
+  static <T> T returnSame(T t) {
+    return t;
+  }
+  // higher order function. A function that returns a function
+  static <T> Function<T, T> returnIdentity() {
+    return t -> t;
   }
 
   /**
@@ -433,7 +470,7 @@ public class Exercises {
       return lines
           .filter(s -> !s.isBlank())
           .map(line -> Integer.parseInt(line.split(";")[0]))
-          .collect(Collectors.toSet());
+          .collect(toSet());
     }
   }
 
