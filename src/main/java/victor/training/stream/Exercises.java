@@ -521,21 +521,29 @@ public class Exercises {
    * @return the elements in Fibonacci sequence between startIndex and endIndex
    */
   public List<Integer> pD_fib(int startIndex, int endIndex) {
-    List<Integer> result = new ArrayList<>();
-    int a = 1;
-    int b = 1;
-    int c = a + b;
-    int index = 0;
-    while (index < endIndex) {
-      if (index >= startIndex) {
-        result.add(a);
-      }
-      a = b;
-      b = c;
-      c = a + b;
-      index++;
-    }
-    return result;
+    // 1,1,2,3,5,8,13,21,34,55,89,144,233,377,610
+    // where iterate can be very useful (when you download data from remote , you can access page by page by page)=> infinite stream
+    return Stream.iterate(new int[]{1, 1}, pair -> new int[]{pair[1], pair[0] + pair[1]})
+            .map(pair -> pair[0])
+            .limit(endIndex)
+            .skip(startIndex)
+            .toList();
+
+//    List<Integer> result = new ArrayList<>();
+//    int a = 1;
+//    int b = 1;
+//    int c = a + b;
+//    int index = 0;
+//    while (index < endIndex) {
+//      if (index >= startIndex) {
+//        result.add(a);
+//      }
+//      a = b;
+//      b = c;
+//      c = a + b;
+//      index++;
+//    }
+//    return result;
 
   }
 
