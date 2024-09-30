@@ -302,15 +302,30 @@ public class Exercises {
    * @return the products bought by the customer, with no duplicates, sorted by Product.name
    */
   public List<Product> p7_productsSorted(List<Order> orders) { // TODO simplify
-    Set<Product> products = new HashSet<>();
-    for (Order order : orders) {
-      for (OrderLine line : order.orderLines()) {
-        products.add(line.product());
-      }
-    }
-    List<Product> sorted = new ArrayList<>(products);
-    sorted.sort((o1, o2) -> o1.name().compareTo(o2.name()));
-    return sorted;
+//    Set<Product> products = new HashSet<>();
+//    for (Order order : orders) {
+//      for (OrderLine line : order.orderLines()) {
+//        products.add(line.product());
+//      }
+//    }
+//    List<Product> sorted = new ArrayList<>(products);
+//    sorted.sort((o1, o2) -> o1.name().compareTo(o2.name()));
+//    return sorted;
+
+    // BABY STEPS:
+    // 1. I will start with the Orders stream
+    // 2. I will flatMap the orders to their orderLines
+    // 3. I will map the orderLines to their products
+    // 4. I will collect the products in a Set
+    // 5. I will sort the products by name
+    // 6. I will return the products in a List
+    return orders.stream()
+            .flatMap(order -> order.orderLines().stream())
+            .map(OrderLine::product)
+            .collect(Collectors.toSet()) // eliminates duplicates (Set) the keys are "sorted" by the hashcode and not by the name
+            .stream()
+            .sorted(comparing(Product::name))
+            .toList();
   }
 
   /**
