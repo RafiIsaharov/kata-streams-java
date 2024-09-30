@@ -155,10 +155,10 @@ public class Exercises {
     // classic refactor when you see a for loop with continue and break
     // you need to create a new collection with the elements and you interesting in and loop threw those => filter
 //    Predicate<Order> noSpecialOffers = Predicate.not(Order::hasSpecialOffer); // higher-order function (function that returns a function)
-      List<Order> regularOrders = orders.stream()
-           // .filter(order -> !order.hasSpecialOffer()).toList();
-            .filter(not(Order::hasSpecialOffer)).toList(); // a bit to geek for the first years
-    //BIG PROBLEM: When I do order of the total,
+//      List<Order> regularOrders = orders.stream()
+    // .filter(order -> !order.hasSpecialOffer()).toList();
+      // a bit to geek for the first years
+      //BIG PROBLEM: When I do order of the total,
     // i will change the order of the elements in the list regularOrders
 //    Comparator<Order> compareByTotal = new Comparator<>() {
 //      @Override
@@ -176,7 +176,8 @@ public class Exercises {
 //    return regularOrders.get(0);
 
 
-      return regularOrders.stream()
+      return orders.stream()
+              .filter(not(Order::hasSpecialOffer)).toList().stream()
               .max(comparing(Order::total))
               .orElse(null);
 
