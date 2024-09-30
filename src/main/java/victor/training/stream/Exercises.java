@@ -443,12 +443,24 @@ public class Exercises {
    */
   public String pA_productNames(List<Order> orders) {
     List<Product> products = p7_productsSorted(orders);
-    StringBuilder sb = new StringBuilder();
-    for (Product product : products) {
-      sb.append(product.name()).append(",");
-    }
-    sb.deleteCharAt(sb.length() - 1); // remove the last comma
-    return sb.toString();
+    // BABY STEPS:
+    // 1. I will start with the products stream
+    // 2. I will map the products to their names
+    // 3. I will join the names with a "," (using StringJoiner)
+    // 4. I will return the joined names
+    return products.stream().map(Product::name).collect(joining(","));
+
+
+//    StringBuilder sb = new StringBuilder();
+//    for (Product product : products) {
+//      sb.append(product.name()).append(",");
+//    }
+//    sb.deleteCharAt(sb.length() - 1); // remove the last comma
+//    return sb.toString();
+
+    // BABY STEPS
+
+
   }
 
   /**
