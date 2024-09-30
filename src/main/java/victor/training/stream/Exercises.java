@@ -327,7 +327,7 @@ public class Exercises {
 //            .sorted(comparing(Product::name))
 //            .toList();
 
-    // using LinkedHashSet
+    // using LinkedHashSet:
 //    return orders.stream()
 //            .flatMap(order -> order.orderLines().stream())
 //            .map(OrderLine::product)
@@ -336,7 +336,7 @@ public class Exercises {
 //            .stream()
 //            .toList();
 
-    // using distinct
+    // using distinct:
     return orders.stream()
             .flatMap(order -> order.orderLines().stream())
             .map(OrderLine::product)
@@ -346,19 +346,27 @@ public class Exercises {
   }
 
   /**
-   * see tests for an example
+   * see tests for an example;  like a GROUP BY in SQL
    */
   public Map<PaymentMethod, List<Order>> p8_ordersGroupedByPaymentMethod(List<Order> orders) {
-    Map<PaymentMethod, List<Order>> map = new HashMap<>();
-    for (Order order : orders) {
-      List<Order> list = map.get(order.paymentMethod());
-      if (list == null) {
-        list = new ArrayList<>();
-        map.put(order.paymentMethod(), list);
-      }
-      list.add(order);
-    }
-    return map;
+//    Map<PaymentMethod, List<Order>> map = new HashMap<>();
+//    for (Order order : orders) {
+//      List<Order> list = map.get(order.paymentMethod());
+//      if (list == null) {
+//        list = new ArrayList<>();
+//        map.put(order.paymentMethod(), list);
+//      }
+//      list.add(order);
+//    }
+//    return map;
+
+    // BABY STEPS:
+    // 1. I will start with the Orders stream
+    // 2. I will group the orders by their paymentMethod
+    // 3. I will return the map
+    return orders.stream()
+            .collect(Collectors.groupingBy(Order::paymentMethod)); // base on order give me a classification key - value
+
   }
 
   /**
