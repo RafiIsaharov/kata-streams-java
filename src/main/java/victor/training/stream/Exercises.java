@@ -467,21 +467,25 @@ public class Exercises {
    * @return orders grouped by Month, and then by PaymentMethod
    */
   public Map<Month, Map<PaymentMethod, List<Order>>> pB_ordersByPaymentPerMonth(List<Order> orders) {
-    Map<Month, Map<PaymentMethod, List<Order>>> result = new HashMap<>();
-    for (Order order : orders) {
-      Map<PaymentMethod, List<Order>> map = result.get(order.createdOn().getMonth());
-      if (map == null) {
-        map = new HashMap<>();
-        result.put(order.createdOn().getMonth(), map);
-      }
-      List<Order> list = map.get(order.paymentMethod());
-      if (list == null) {
-        list = new ArrayList<>();
-        map.put(order.paymentMethod(), list);
-      }
-      list.add(order);
-    }
-    return result;
+//    Map<Month, Map<PaymentMethod, List<Order>>> result = new HashMap<>();
+//    for (Order order : orders) {
+//      Map<PaymentMethod, List<Order>> map = result.get(order.createdOn().getMonth());
+//      if (map == null) {
+//        map = new HashMap<>();
+//        result.put(order.createdOn().getMonth(), map);
+//      }
+//      List<Order> list = map.get(order.paymentMethod());
+//      if (list == null) {
+//        list = new ArrayList<>();
+//        map.put(order.paymentMethod(), list);
+//      }
+//      list.add(order);
+//    }
+//    return result;
+
+    return orders.stream()
+            .collect(groupingBy(order -> order.createdOn().getMonth(),
+                    groupingBy(Order::paymentMethod)));
   }
 
   /**
